@@ -1,2 +1,2 @@
 #!/bin/bash
-ls -aFm; echo -e "\n"
+ls -amvp
