@@ -1,3 +1,2 @@
 #!/bin/bash
-ls -aFm
-echo -e "\n"
+ls -aFm; echo -e "\n"
