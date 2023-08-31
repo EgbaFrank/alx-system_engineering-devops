@@ -14,3 +14,4 @@
 12. Prints file type for /tmp/iamafile
 13. Links symbolically /bin/ls to __ls__
 14. Copies all files ending in .html, if not in .. to ..
+15. 
