@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Displays PID of its instance
+echo $$
