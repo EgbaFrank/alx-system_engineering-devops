@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# Signal and processes learning task
+# This script does:
+#   Create a file /var/run/myscript.pid containing the script PID.
+#   Displays "To infinity and beyond" indefinitely
+#   Displays "I hate the kill command" upon receiving a SIGTERM
+#   Displays "Y U no love me?!" upon receiving a SIGINT
+#   Deletes the file /var/run/myscript.pid and terminates upon
+#+  receiving a SIGQUIT or SIGTERM.
+
+# Function to clean up resources and terminate the script
+cleanup() {
+	rm /var/run/myscript.pid
+	exit 0
+}
+
+# Set up trap to handle SIGTERM, SIGINT, and SIGQUIT signals
+trap 'echo "I hate the kill command" && cleanup' SIGTERM
+trap 'echo "Y U no love me?!" && break' SIGINT
+trap 'cleanup' SIGQUIT
+
+# Write the PID of the script to the file
+echo "$$" > /var/run/myscript.pid
+
+# Loop indefinitely
+while true; do
+	echo "To infinity and beyond"
+
+	sleep 2
+done
