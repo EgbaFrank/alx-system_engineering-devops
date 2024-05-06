@@ -10,7 +10,7 @@ start() {
 
 # Stop function
 stop() {
-	kill $(cat /var/run/my_process.pid)
+	kill "$(cat /var/run/my_process.pid)"
 	rm /var/run/my_process.pid
 	echo "manage_my_process stopped"
 }
@@ -18,7 +18,7 @@ stop() {
 # Restart function
 restart() {
 	# Stopping process
-	kill $(cat /var/run/my_process.pid)
+	kill "$(cat /var/run/my_process.pid)"
 	rm /var/run/my_process.pid
 
 	# Starting up process
