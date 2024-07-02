@@ -24,7 +24,7 @@ fi
 # Starting nginx if not running
 if ! pgrep -x "nginx" > /dev/null; then
 	echo "Starting Nginx"
-	systemctl start nginx
+	nginx
 fi
 
 # Add index file to root

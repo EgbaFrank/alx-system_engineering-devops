@@ -24,7 +24,7 @@ fi
 # Starting nginx if not running
 if ! pgrep -x "nginx" > /dev/null; then
 	echo "Starting Nginx"
-	systemctl start nginx
+	nginx
 fi
 
 # Add index file to root
@@ -35,7 +35,7 @@ echo "Hello World!" > /var/www/html/index.html
 echo "Reloading Nginx"
 
 if nginx -t; then
-	nginx -t
+	nginx -s reload
 else
 	echo "Nginx syntax error, re-check configuration"
 	exit 1
@@ -46,6 +46,6 @@ echo "Checking Nginx status"
 if curl -I http://localhost 2>/dev/null | grep -q "200 OK"; then
 	echo "Nginx is running and serving the default page"
 else
-	echo "Nginx is not serving the default page, please check the configuration"
+	echo "Nginx is not serving the default page, please check the configuration or install curl"
 	exit 1
 fi
