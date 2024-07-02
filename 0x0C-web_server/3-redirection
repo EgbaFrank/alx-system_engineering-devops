@@ -8,7 +8,7 @@ fi
 
 # Running updates
 echo "Running updates..."
-apt update && apt -y upgrade
+apt update
 
 # Installing Nginx and its dependencies
 echo "Installing nginx"
