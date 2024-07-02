@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# Install nginx and configure 301 redirect on a server
+
+if [ "$(id -u)" -ne 0 ]; then
+	echo "This script must be run as root."
+	exit 1
+fi
+
+# Running updates
+echo "Running updates..."
+apt update && apt -y upgrade
+
+# Installing Nginx and its dependencies
+echo "Installing nginx"
+apt -y install nginx
+
+# Configure firewall
+echo "Configuring firewall, if exists"
+
+if ufw --version; then
+	ufw allow 'Nginx HTTP'
+fi
+
+# Starting nginx if not running
+if ! pgrep -x "nginx" > /dev/null; then
+	echo "Starting Nginx"
+	systemctl start nginx
+	systemctl enable nginx
+fi
+
+# Add index file to root
+echo "Adding index.html file to Nginx default root"
+echo "Hello World!" > /var/www/html/index.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
+
+# Adding 301 redirection
+# create new rule at /etc/nginx/conf.d/ to separate concern
+# use 'include' to link this to new rule
+sed -i '53a\\tlocation /redirect_me {\
+	\t\treturn 301 https://www.alxafrica.com;\
+	\t}\n\
+	\terror_page 404 /404.html;\n\
+	\tlocation = /404.html {\
+	\t\tinternal;\
+	\t}\n' /etc/nginx/sites-available/default
+
+# Reloading nginx
+echo "Reloading Nginx"
+
+if nginx -t; then
+	nginx -s reload
+else
+	echo "Nginx syntax error, re-check configuration"
+	exit 1
+fi
+
+echo "Checking Nginx status"
+
+if curl -I http://localhost 2>/dev/null | grep -q "200 OK"; then
+	echo "Nginx is running and serving the default page"
+else
+	echo "Nginx is not serving the default page, please check the configuration, or install curl"
+	exit 1
+fi
