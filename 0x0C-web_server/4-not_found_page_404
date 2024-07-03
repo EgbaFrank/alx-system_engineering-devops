@@ -35,13 +35,17 @@ echo "Ceci n'est pas une page" > /var/www/html/404.html
 # Adding 301 redirection
 # create new rule at /etc/nginx/conf.d/ to separate concern
 # use 'include' to link this to new rule
-sed -i '53a\\tlocation /redirect_me {\
-	\t\treturn 301 https://www.alxafrica.com;\
-	\t}\n\
-	\terror_page 404 /404.html;\n\
-	\tlocation = /404.html {\
-	\t\tinternal;\
-	\t}\n' /etc/nginx/sites-available/default
+sed -i '53a\
+	location /redirect_me {\
+		return 301 https://www.alxafrica.com;\
+	}\
+	\
+	error_page 404 /404.html;\
+	\
+	location = /404.html {\
+		internal;\
+	}\
+	' /etc/nginx/sites-available/default
 
 # Reloading nginx
 echo "Reloading Nginx"
