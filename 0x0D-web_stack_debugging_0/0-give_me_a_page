@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Fix apache2 web server bug, AH00558
+echo 'ServerName localhost' >> /etc/apache2/apache2.conf
+service apache2 restart
