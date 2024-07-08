@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Installs and configures a HAproxy load balancer (2.8-stable)
+
+if [ "$(id -u)" -ne 0 ]; then
+	echo "This script must be run as root."
+	exit 1
+fi
+
+# Running system updates
+apt update && apt -y upgrade
+
+# Installing haproxy and its dependencies
+apt-get -y install --no-install-recommends software-properties-common
+add-apt-repository -y ppa:vbernat/haproxy-2.8
+apt-get update
+apt-get -y install haproxy=2.8.\*
+
+# Enable haproxy at startup
+echo "ENABLED=1" >> /etc/default/haproxy
+
+# Duplicate haproxy config file for contingency
+cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
+
+# Specifying Level 4 load balancing
+sed -i '/mode	http/c\	mode	tcp' /etc/haproxy/haproxy.cfg
+
+sed -i '/option	httplog/c\	option	tcplog' /etc/haproxy/haproxy.cfg
+
+# Configuring load balancing
+cat <<EOL >> /etc/haproxy/haproxy.cfg
+
+frontend http_front
+	bind *:80
+	default_backend http_back
+
+backend http_back
+	balance roundrobin
+	mode tcp
+	server web_01 52.90.15.81:80 check
+	server web_02 34.201.68.12:80 check
+EOL
+
+# Restarting haproxy service
+service haproxy reload
+
+# Checking haproxy status
+service haproxy status
