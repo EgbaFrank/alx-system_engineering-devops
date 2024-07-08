@@ -9,11 +9,21 @@ fi
 # Running system updates
 apt update && apt -y upgrade
 
+# Source the OS release information
+# shellcheck source=/dev/null
+. /etc/os-release
+
 # Installing haproxy and its dependencies
-apt-get -y install --no-install-recommends software-properties-common
-add-apt-repository -y ppa:vbernat/haproxy-2.8
-apt-get update
-apt-get -y install haproxy=2.8.\*
+if [[ "$VERSION_CODENAME" == "focal" ]]; then
+	apt-get -y install --no-install-recommends software-properties-common
+	add-apt-repository -y ppa:vbernat/haproxy-2.8
+	apt-get update
+	apt-get -y install haproxy=2.8.\*
+else
+	apt-get -y install haproxy
+fi
+
+echo "HAProxy installation completed."
 
 # Enable haproxy at startup
 echo "ENABLED=1" >> /etc/default/haproxy
@@ -44,4 +54,8 @@ EOL
 service haproxy reload
 
 # Checking haproxy status
-service haproxy status
+if service haproxy status; then
+	echo "HAProxy installation and configuration completed."
+else
+	echo "An error occured during installation, please rectify this and try again later."
+fi
