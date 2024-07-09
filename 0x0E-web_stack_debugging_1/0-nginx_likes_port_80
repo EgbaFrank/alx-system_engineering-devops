@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# Install nginx on a server
+
+if [ "$(id -u)" -ne 0 ]; then
+	echo "This script must be run as root."
+	exit 1
+fi
+
+# Running updates
+echo "Running updates..."
+apt update
+
+# Installing Nginx and its dependencies
+echo "Installing nginx"
+apt -y install nginx
+
+# Configure firewall
+echo "Configuring firewall, if exists"
+
+if ufw --version; then
+	ufw allow 'Nginx HTTP'
+fi
+
+# Starting nginx if not running
+if ! pgrep -x "nginx" > /dev/null; then
+	echo "Starting Nginx"
+	nginx
+fi
+
+# Reloading nginx
+echo "Reloading Nginx"
+
+if nginx -t; then
+	nginx -s reload
+else
+	echo "Nginx syntax error, re-check configuration"
+	exit 1
+fi
+
+echo "Checking Nginx status"
+
+if curl -I http://localhost 2>/dev/null | grep -q "200 OK"; then
+	echo "Nginx is running and serving the default page"
+else
+	echo "Nginx is not serving the default page, please check the configuration or install curl"
+	exit 1
+fi
