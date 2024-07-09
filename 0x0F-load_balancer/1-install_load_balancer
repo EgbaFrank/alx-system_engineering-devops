@@ -56,7 +56,7 @@ backend http_back
 EOL
 
 # Restarting haproxy service
-service haproxy reload
+service haproxy restart
 
 # Checking haproxy status
 if service haproxy status &> /dev/null; then
