@@ -23,8 +23,9 @@ else
 	apt-get -y install haproxy
 fi
 
+# Install rsyslog to enable logging
 if ! service rsyslog status; then
-	if ! dpkg -s rsyslog >/dev/null 2>&1; then
+	if ! dpkg -s rsyslog > /dev/null 2>&1; then
 		apt-get -y install rsyslog
 	fi
 	service rsyslog enable
@@ -34,15 +35,12 @@ fi
 echo "HAProxy installation completed."
 
 # Enable haproxy at startup
-echo "ENABLED=1" >> /etc/default/haproxy
+if ! grep -q '^ENABLED=1$' /etc/default/haproxy; then
+	echo "ENABLED=1" >> /etc/default/haproxy
+fi
 
 # Duplicate haproxy config file for contingency
 cp /etc/haproxy/haproxy.cfg /etc/haproxy/haproxy.cfg.orig
-
-# Specifying Level 4 load balancing
-sed -i '/mode	http/c\	mode	tcp' /etc/haproxy/haproxy.cfg
-
-sed -i '/option	httplog/c\	option	tcplog' /etc/haproxy/haproxy.cfg
 
 # Configuring load balancing
 cat <<EOL >> /etc/haproxy/haproxy.cfg
@@ -53,16 +51,15 @@ frontend http_front
 
 backend http_back
 	balance roundrobin
-	mode tcp
 	server web_01 52.90.15.81:80 check
-	server web_02 34.201.68.12:80 check
+	server web_02 18.204.11.162:80 check
 EOL
 
 # Restarting haproxy service
 service haproxy reload
 
 # Checking haproxy status
-if service haproxy status; then
+if service haproxy status &> /dev/null; then
 	echo "HAProxy installation and configuration completed."
 else
 	echo "An error occured during installation, please rectify this and try again later."
