@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Attempt fixing issues on listening on port 80
+sudo service nginx restart
+sudo service nginx stop
