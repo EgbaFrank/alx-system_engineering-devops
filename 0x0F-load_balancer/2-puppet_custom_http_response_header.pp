@@ -33,7 +33,7 @@ file_line { 'nginx_redirect':
 file_line { 'custom_header':
   path    => '/etc/nginx/sites-available/default',
   line    => 'add_header X-Served-By $hostname always;',
-  after   => 'location / {',
+  after   => 'try_files $uri $uri/ =404;',
   require => Package['nginx'],
   notify  => Service['nginx'],
 }
