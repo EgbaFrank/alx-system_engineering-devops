@@ -23,6 +23,14 @@ else
 	apt-get -y install haproxy
 fi
 
+if ! service rsyslog status; then
+	if ! dpkg -s rsyslog >/dev/null 2>&1; then
+		apt-get -y install rsyslog
+	fi
+	service rsyslog enable
+	service rsyslog start
+fi
+
 echo "HAProxy installation completed."
 
 # Enable haproxy at startup
