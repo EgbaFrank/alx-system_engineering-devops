@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# display information about subdomains
+
+audit() {
+	local name=$1
+	local record IP
+
+	read -r record IP < <(dig "$name" | awk '/^;; ANSWER SECTION:$/ { getline; print $4, $5 }')
+
+	echo "The subdomain $sub is a $record record and points to $IP"
+}
+
+case $# in
+	1)
+		subdomains=("www" "lb-01" "web-01" "web-02")
+		;;
+	2)
+		subdomains=("$2")
+		;;
+	*)
+		echo "Usage: $0 domain [subdomain]"
+		exit 1
+		;;
+esac
+
+for sub in "${subdomains[@]}"; do
+	audit "$sub.$1"
+done
