@@ -2,18 +2,12 @@
 
 exec { 'update':
   path    => '/usr/bin/:',
-  command => 'apt update && apt -y upgrade',
+  command => 'apt update',
 }
 
 package { 'nginx':
   ensure  => installed,
   require => Exec['update'],
-}
-
-service { 'nginx':
-  ensure  => running,
-  enable  => true,
-  require => Package['nginx'],
 }
 
 file_line { 'custom_header':
