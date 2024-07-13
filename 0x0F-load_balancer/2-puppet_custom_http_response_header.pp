@@ -17,10 +17,11 @@ service { 'nginx':
 }
 
 file_line { 'custom_header':
-  path    => '/etc/nginx/sites-available/default',
-  line    => "\n\tadd_header X-Served-By $hostname always;",
-  after   => 'server_name _;',
-  require => Package['nginx'],
+  path     => '/etc/nginx/sites-available/default',
+  line     => "\n\tadd_header X-Served-By ${hostname} always;",
+  after    => 'server_name _;',
+  require  => Package['nginx'],
+  multiple => false,
 }
 
 exec { 'restart_nginx':
