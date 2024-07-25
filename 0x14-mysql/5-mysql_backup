@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 # Generates and creates a compressed MySQL dump archive
 
-if ! mysqldump -u root -p"$1" --all-databases > backup.sql; then
+if ! mysqldump -uroot -p"$1" --all-databases > backup.sql; then
 	echo "An error occured during the dump"
 	exit 1
 fi
 
 file_name=$(date +"%d-%m-%Y").tar.gz
-if ! tar -czf "$file_name" backup.sql; then
+if ! tar -cvzf "$file_name" backup.sql; then
 	echo "An error occured during archive creation"
 	exit 2
 fi
