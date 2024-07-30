@@ -38,9 +38,12 @@ if __name__ == "__main__":
         task.pop('id')
         task['username'] = name
 
-    fieldnames = ["userId","username","completed","title"]
+    fieldnames = ["userId", "username", "completed", "title"]
 
     with open(f'{ID}.csv', mode='w', newline='') as file:
-        csv_writer = csv.DictWriter(file, fieldnames=fieldnames, quoting=csv.QUOTE_ALL)
+        csv_writer = csv.DictWriter(
+                file,
+                fieldnames=fieldnames,
+                quoting=csv.QUOTE_ALL
+                )
         csv_writer.writerows(todos)
-
