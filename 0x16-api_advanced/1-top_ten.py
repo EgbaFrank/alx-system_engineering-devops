@@ -13,12 +13,13 @@ def top_ten(subreddit):
     Return:
         (str): titles of the 10 ten posts
     """
-    url = f"https://api.reddit.com/r/{subreddit}/hot?limit=10"
+    url = f"https://api.reddit.com/r/{subreddit}/hot"
     header = {'User-Agent': 'ubuntu by Frank'}
-    response = requests.get(url, headers=header)
-    posts = response.json().get('data')
+    response = requests.get(url, headers=header, params={'limit': 10})
 
-    if posts:
+    if response.status_code == 200:
+        posts = response.json().get('data')
+
         for post in posts.get('children')[:10]:
             print(post.get('data', {}).get('title'))
     else:

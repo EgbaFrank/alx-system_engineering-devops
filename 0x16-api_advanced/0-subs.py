@@ -12,7 +12,8 @@ def number_of_subscribers(subreddit):
             subreddit(str): subreddit to be checked
 
     Returns:
-            (int): Number of subscibers
+            (int): Number of subscibers or 0
+            if the subreddit is invalid or inaccessible.
     """
 
     url = f"https://api.reddit.com/r/{subreddit}/about"
@@ -20,4 +21,4 @@ def number_of_subscribers(subreddit):
     response = requests.get(url, headers=header)
     if response.status_code != 200:
         return 0
-    return response.json().get('data', 0).get('subscribers', 0)
+    return response.json().get('data', {}).get('subscribers', 0)
