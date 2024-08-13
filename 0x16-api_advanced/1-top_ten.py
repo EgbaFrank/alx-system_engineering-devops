@@ -17,10 +17,13 @@ def top_ten(subreddit):
     header = {'User-Agent': 'ubuntu by Frank'}
     response = requests.get(url, headers=header, params={'limit': 10})
 
-    if response.status_code == 200:
-        posts = response.json().get('data').get('children')
+    try:
+        if response.status_code == 200:
+            posts = response.json().get('data').get('children')
 
-        for post in posts:
-            print(post.get('data', {}).get('title'))
-    else:
+            for post in posts:
+                print(post.get('data', {}).get('title'))
+        else:
+            print(None)
+    except Exception as e:
         print(None)
