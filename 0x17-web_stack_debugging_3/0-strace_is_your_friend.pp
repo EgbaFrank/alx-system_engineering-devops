@@ -1,7 +1,6 @@
 # Fixes a wordpress bug
 
-file_line { 'Fix-wordpress':
-  path  => '/var/www/html/wp-settings.php',
-  line  => "require_once( ABSPATH . WPINC . '/class-wp-locale.php' );",
-  match => '^require_once\( ABSPATH \. WPINC \. \'/class-wp-locale\.phpp\' \);$',
+exec { 'Fix-wordpress-phpp':
+  command => "sed -i 's/phpp/php/g' /var/www/html/wp-settings.php",
+  path    => '/usr/bin:/bin',
 }
