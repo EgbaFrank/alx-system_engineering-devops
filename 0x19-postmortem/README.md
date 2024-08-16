@@ -46,8 +46,8 @@
 - **Improve Monitoring and Alerting**: Enhance monitoring and alerting to detect issues like this earlier, reducing the time to detect and respond to incidents.
 
 ### Action Items
-- [] Create a firewall configuration checklist including port rules, IP whitelisting, and service accounts.
-- [] Enhance monitoring systems to detect configuration issues and server performance anomalies.
-- [] Implement a mandatory code review process for all new features.
-- [] Develop automated scripts for routine system checks and performance testing.
-- [] Establish a dedicated rollback environment for testing and implementation.
+- [ ] Create a firewall configuration checklist including port rules, IP whitelisting, and service accounts.
+- [ ] Enhance monitoring systems to detect configuration issues and server performance anomalies.
+- [ ] Implement a mandatory code review process for all new features.
+- [ ] Develop automated scripts for routine system checks and performance testing.
+- [ ] Establish a dedicated rollback environment for testing and implementation.
