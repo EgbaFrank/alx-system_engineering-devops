@@ -7,7 +7,7 @@ exec { 'Fix-nginx-limit':
 }
 
 exec { 'restart_nginx':
-  command     => 'service nginx reload',
+  command     => 'service nginx restart',
   path        => ['/usr/bin', '/usr/sbin'],
   refreshonly => true,
 }
