@@ -2,7 +2,7 @@
 # Gracefully reloads Gunicorn
 
 # Get the master process ID of Gunicorn
-PID=$(pgrep -f 'gunicorn: master')
+PID=$(pgrep gunicorn)
 
 if [ -n "$PID" ]; then
 	# Send the SIGHUP signal to the master process
