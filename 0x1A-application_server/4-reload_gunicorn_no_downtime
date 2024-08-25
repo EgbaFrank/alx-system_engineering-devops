@@ -3,11 +3,4 @@
 
 # Get the master process ID of Gunicorn
 PID=$(pgrep gunicorn)
-
-if [ -n "$PID" ]; then
-	# Send the SIGHUP signal to the master process
-	kill -HUP "$PID"
-	echo "Gunicorn reloaded successfully."
-else
-	echo "Gunicorn master process not found."
-fi
+kill -HUP "$PID"
